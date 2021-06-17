@@ -1,0 +1,64 @@
+.layout {
+  padding: 8vw 4vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-size: cover;
+}
+
+.videoContainer {
+  position: absolute;
+  overflow: hidden;
+  left: 0;
+  top: 0;
+  height: 100vh;
+  width: 100vw;
+}
+
+.videoBackground {
+  height: 100%;
+  width: 177.77777778vh;
+  min-height: 56.25vw;
+  min-width: 100%;
+}
+
+.heroContainer {
+  position: relative;
+  margin: 0 auto;
+  filter: drop-shadow(1vw 3vw 3vw #000);
+  animation: shadowAnimation 4s ease-in-out infinite;
+  overflow: hidden;
+}
+
+@keyframes shadowAnimation {
+	0%, 100% {
+		filter: drop-shadow(1vw 3vw 3vw #000);
+	}
+	50% {
+		filter: drop-shadow(2vw 4vw 3.5vw #000);
+	}
+}
+
+.heroContainer .hero {
+  background-position:center center;
+  background-size: cover;
+  clip-path: url('#angryClip');
+  width: 70vw;
+  height: 70vw;
+  max-width: 90vh;
+  max-height: 90vh;
+}
+
+.hidden {
+  width: 0px;
+  height: 0px;
+}
+
+.footer {
+  padding: 8vw 4vw;
+  background-color: black;
+  color:grey;
+  font-size: smaller;
+}
