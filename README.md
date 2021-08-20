@@ -2,8 +2,19 @@
 https://iconicindex.vercel.app/
 
 ## Getting Started
-First, run the development server:
+- Setup your environment: `cp .env .env.local`
+- Add set a secret key for `DEV_WALLET_PRIVATE_KEY` which will be contract owner
+  - `npx hardhat wallet` to generate a new one
+- `npx hardhat faucet` to get eth to your dev user
 
+```bash
+npx hardhat node
+npx hardhat run --network localhost scripts/deploy.js
+## or testnet via infura
+npx hardhat run --network ropsten scripts/deploy.js
+```
+
+Local UI:
 ```bash
 npm run dev
 ```

@@ -3,6 +3,8 @@
 artifacts/
 cache/
 
+.vscode/
+
 # dependencies
 /node_modules
 /.pnp

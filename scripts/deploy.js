@@ -1,25 +1,32 @@
+const fs = require('fs');
+const { ethers } = require("hardhat");
+const deployConfigPath = './artifacts/deploy.json';
 const nftPrice = ethers.utils.parseUnits('0.1','ether');
-const devAddress = '0xd756cB92BcD8400CA1B12a237b7C57FdF3Bc26f7';
-
-async function deployContract () {
-  const IconicIndexFactory = await ethers.getContractFactory('IconicIndex');
-  console.log('deploying nft contract');
-  const iconicIndex = await IconicIndexFactory.deploy(nftPrice);
-  await iconicIndex.deployed();
-  console.log('IconicIndex deployed to ', iconicIndex.address)
-};
 
 async function main() {
-  await deployContract ();
+  const IconicIndexFactory = await ethers.getContractFactory('IconicIndex');
 
-  const [contractOwner, addr1, addr2] = await ethers.getSigners();
-  console.log('contractOwner ', contractOwner.address);
+  console.log('Deploying nft contract');
+  const iconicIndex = await IconicIndexFactory.deploy(nftPrice);
+  await iconicIndex.deployed();
+  console.log('IconicIndex deployed to ', iconicIndex.address);
 
-  const tx = await addr2.sendTransaction({
-    to: devAddress,
-    value: ethers.utils.parseEther("1.0")
-  });
-  console.log('transaction complete', tx);
+  setDeployAddress(iconicIndex.address);
+  console.log('Deploy Config Updated');
+}
+
+function setDeployAddress(address) {
+  let deployConfig;
+  try {
+    let rawdata = fs.readFileSync(deployConfigPath);
+    deployConfig = JSON.parse(rawdata);  
+  } catch (error) {
+    deployConfig = {};
+  }
+
+  deployConfig.contractAddress = address;
+
+  fs.writeFileSync(deployConfigPath, JSON.stringify(deployConfig));
 }
 
 main()

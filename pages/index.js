@@ -2,6 +2,7 @@ import Head from 'next/head'
 import Link from 'next/link'
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
+import deployConfig from '../artifacts/deploy.json'
 
 export default function Home() {
   return (
@@ -19,6 +20,10 @@ export default function Home() {
 
         <p className={styles.description}>
           Iterating iconographic token assets
+        </p>
+
+        <p>
+          Contract Address: { deployConfig.contractAddress }
         </p>
 
         <div className={styles.grid}>
