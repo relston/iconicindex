@@ -1,6 +1,11 @@
 # Iconic Index
 https://iconicindex.vercel.app/
 
+
+mkdir utils
+touch utils/connectWallet.js
+pages/index.js
+
 ## Getting Started
 - Setup your environment: `cp .env .env.local`
 - Add set a secret key for `DEV_WALLET_PRIVATE_KEY` which will be contract owner

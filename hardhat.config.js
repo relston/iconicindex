@@ -1,6 +1,7 @@
-require('@nomiclabs/hardhat-ethers');
+const { loadEnvConfig } = require('@next/env')
+const { INFURA_API_KEY, DEV_WALLET_PRIVATE_KEY, DEV_USER_ADDRESS } = loadEnvConfig('./').combinedEnv
 
-const { INFURA_API_KEY, DEV_WALLET_PRIVATE_KEY, DEV_USER_ADDRESS } = process.env;
+require('@nomiclabs/hardhat-ethers');
 
 task("accounts", "Prints the list of accounts", async () => {
   const accounts = await ethers.getSigners();

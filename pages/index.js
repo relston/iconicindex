@@ -2,9 +2,25 @@ import Head from 'next/head'
 import Link from 'next/link'
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
-import deployConfig from '../artifacts/deploy.json'
+import { useEffect, useState } from "react";
+import { ConnectButton, injected } from '../utils/connectWallet'
+import { useWeb3React } from '@web3-react/core'
 
-export default function Home() {
+export default function Home() {  
+  // const { active } = useWeb3React();
+  const { account, library, activate } = useWeb3React();
+  const isConnected = typeof account === "string" && !!library;
+  
+  useEffect(()=>{
+    activate(injected, null, null);
+    // async function inspect() {
+    //   const response = await injected.isAuthorized();
+    //   console.log('account', account, library, injected, response);
+    //   debugger;
+    // }
+    // inspect();
+  }, [activate])
+
   return (
     <div className={styles.container}>
       <Head>
@@ -21,13 +37,12 @@ export default function Home() {
         <p className={styles.description}>
           Iterating iconographic token assets
         </p>
-
         <p>
-          Contract Address: { deployConfig.contractAddress }
+          { !isConnected && <ConnectButton />}
         </p>
 
         <div className={styles.grid}>
-          <Link href='assets/000'>
+          <Link href='/icons/000'>
             <a className={styles.card}>
               <h2>First Asset &rarr;</h2>
               <p>Happy feet, freshly minted</p>
