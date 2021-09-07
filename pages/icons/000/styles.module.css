@@ -29,7 +29,6 @@
   margin: 0 auto;
   filter: drop-shadow(1vw 3vw 3vw #000);
   animation: shadowAnimation 4s ease-in-out infinite;
-  overflow: hidden;
 }
 
 @keyframes shadowAnimation {
@@ -43,7 +42,7 @@
 
 .heroContainer .hero {
   background-position:center center;
-  background-size: cover;
+  background-size: contain;
   clip-path: url('#angryClip');
   width: 70vw;
   height: 70vw;

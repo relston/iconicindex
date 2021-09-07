@@ -1,7 +1,6 @@
 import Image from 'next/image'
 import AngryClip from './angryClip';
 import crackedMud from './cracked-mud.jpg';
-import abstractImage from './abstract.webp';
 import styles from './styles.module.css';
 
 const layoutBackground = {
