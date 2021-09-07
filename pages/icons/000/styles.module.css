@@ -42,7 +42,7 @@
 
 .heroContainer .hero {
   background-position:center center;
-  background-size: contain;
+  background-size: cover;
   clip-path: url('#angryClip');
   width: 70vw;
   height: 70vw;
