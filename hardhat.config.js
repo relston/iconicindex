@@ -1,5 +1,5 @@
 const { loadEnvConfig } = require('@next/env')
-const { INFURA_API_KEY, DEV_WALLET_PRIVATE_KEY, DEV_USER_ADDRESS } = loadEnvConfig('./').combinedEnv
+const { INFURA_API_KEY, DEV_WALLET_PRIVATE_KEY, DEV_USER_ADDRESS, BENEFICIARY_PK, BENEFICIARY_ADDRESS } = loadEnvConfig('./').combinedEnv
 
 require('@nomiclabs/hardhat-ethers');
 
@@ -36,6 +36,9 @@ module.exports = {
       accounts: [{
         privateKey: DEV_WALLET_PRIVATE_KEY, 
         balance: "10000000000000000000000"
+      }, {
+        privateKey: BENEFICIARY_PK,
+        balance: "0"
       }]
     },
     ropsten: {

@@ -5,29 +5,33 @@ const { expect } = require("chai");
  * @todo 
  */
 describe("Nft", function() {
-  const nftPrice = ethers.utils.parseUnits('0.1','ether')
+  const baseUri = 'https://localhost'
+  // const beneficiaryAddress = '123' // this is not working, I need an actuall address
+  const initialFloorPrice = ethers.utils.parseUnits('0.1','ether')
 
   beforeEach(async () => {
-    this.IconicIndexFactory = await ethers.getContractFactory("IconicIndex")
-    this.iconicIndex = await this.IconicIndexFactory.deploy(nftPrice);
-    await this.iconicIndex.deployed();
-    const [contractOwner, addr1, addr2] = await ethers.getSigners();
+    const [contractOwner, beneficiaryAddress, addr2] = await ethers.getSigners();
     this.contractOwner = contractOwner;
-    this.addr1 = addr1;
+    this.beneficiaryAddress = beneficiaryAddress;
     this.addr2 = addr2;
+
+    this.IconicIndexFactory = await ethers.getContractFactory("IconicIndex");
+    this.iconicIndex = await this.IconicIndexFactory.deploy(baseUri, beneficiaryAddress.address, initialFloorPrice);
+
+    await this.iconicIndex.deployed();
   });
 
   describe('deploying the contract', async () => {
-    it('sets the starting NFT price', async () => {
+    it('sets the floor price for the first token', async () => {
       const { iconicIndex } = this;
-      const price = await iconicIndex.startingPrice();
-      expect(price.toString()).to.equal(nftPrice.toString()); 
+      const price = await iconicIndex.floorPriceFor(0);
+      expect(price.toString()).to.equal(initialFloorPrice.toString()); 
     });
 
-    it('mints the first nft', async () => {
-      const { iconicIndex, contractOwner } = this;
-      const nftOwnerAddress = await iconicIndex.ownerOf(0)
-      expect(nftOwnerAddress).to.equal(contractOwner.address);
+    it('sets the beneficiaryAddress', async () => {
+      const { iconicIndex, beneficiaryAddress } = this;
+      const address = await iconicIndex.beneficiaryAddress();
+      expect(address).to.equal(beneficiaryAddress.address); 
     });
   });
 
@@ -57,7 +61,7 @@ describe("Nft", function() {
     describe('#purchase', async () => {
       const doPurchase = async () => {
         const { iconicIndex, addr1 } = this;
-        await iconicIndex.connect(addr1).purchase(0, { value: nftPrice });
+        await iconicIndex.connect(addr1).purchase(0, { value: initialFloorPrice });
       }
 
       it('assigns the NFT to the purchaser', async () => {
@@ -79,7 +83,7 @@ describe("Nft", function() {
         await doPurchase()
         const ownerWalletAfterPurchase = await contractOwner.getBalance();
         const difference = ownerWalletAfterPurchase.sub(ownerWalletBeforePurchase);
-        expect(difference.toString()).to.equal(nftPrice.toString());
+        expect(difference.toString()).to.equal(initialFloorPrice.toString());
       });
 
       describe('after a nft has already been bought', async () => {
@@ -90,7 +94,7 @@ describe("Nft", function() {
         it('will not let anyone else purchase it', async () => {
           const { iconicIndex, addr2 } = this;
           let error;
-          try { await iconicIndex.connect(addr2).purchase(0, { value: nftPrice }); } 
+          try { await iconicIndex.connect(addr2).purchase(0, { value: initialFloorPrice }); } 
           catch(e) { error = e; }
   
           expect(error.message).to.equal("VM Exception while processing transaction: revert Item not available for purchase");

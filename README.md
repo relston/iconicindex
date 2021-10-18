@@ -1,11 +1,6 @@
 # Iconic Index
 https://iconicindex.vercel.app/
 
-
-mkdir utils
-touch utils/connectWallet.js
-pages/index.js
-
 ## Getting Started
 - Setup your environment: `cp .env .env.local`
 - Add set a secret key for `DEV_WALLET_PRIVATE_KEY` which will be contract owner
@@ -23,6 +18,10 @@ Local UI:
 ```bash
 npm run dev
 ```
+
+### Questions
+- How do I pull up @openzeppelin/contracts/token/ERC721/ERC721.sol into editor?
+  - what where @references called again?
 
 #### References
 - [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
