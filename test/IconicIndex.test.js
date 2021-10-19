@@ -10,10 +10,10 @@ describe("Nft", function() {
   const initialFloorPrice = ethers.utils.parseUnits('0.1','ether')
 
   beforeEach(async () => {
-    const [contractOwner, beneficiaryAddress, addr2] = await ethers.getSigners();
+    const [contractOwner, beneficiaryAddress, addr1] = await ethers.getSigners();
     this.contractOwner = contractOwner;
     this.beneficiaryAddress = beneficiaryAddress;
-    this.addr2 = addr2;
+    this.addr1 = addr1;
 
     this.IconicIndexFactory = await ethers.getContractFactory("IconicIndex");
     this.iconicIndex = await this.IconicIndexFactory.deploy(baseUri, beneficiaryAddress.address, initialFloorPrice);
@@ -36,39 +36,48 @@ describe("Nft", function() {
   });
 
   describe('a deployed contract', async () => {
-    describe('minting', async () => {
-      it('lets the owner mint', async () => {
-        const { iconicIndex, contractOwner} = this;
+    describe('#postItem', async () => {
+
+    })
+
+    describe('postItem', async () => {
+      const newFloorPrice = ethers.utils.parseUnits('0.2','ether')
+
+      it('creates a new token id and price', async () => {
+        const { iconicIndex, contractOwner } = this;
         
-        await iconicIndex.connect(contractOwner).mint();
-        expect(await iconicIndex.ownerOf(1)).to.equal(contractOwner.address);  
+        await iconicIndex.connect(contractOwner).postItem(newFloorPrice);
+        const price = await iconicIndex.floorPriceFor(1);
+        expect(price.toString()).to.equal(newFloorPrice.toString()); 
       });
   
-      it('does not let others mint', async () => {
+      it('only allows the owner', async () => {
         const { iconicIndex, addr1 } = this;
         let error;
         
-        try { await iconicIndex.connect(addr1).mint() } 
+        try { await iconicIndex.connect(addr1).postItem(1); } 
         catch(e) { error = e; }
   
-        expect(error.message).to.equal("VM Exception while processing transaction: revert Ownable: caller is not the owner");
+        expect(error.message).to.equal(
+          "VM Exception while processing transaction: reverted with reason string 'Ownable: caller is not the owner'"
+        );
       });
     });
 
     /**
-     * @description buying a minted nft directly from the owner
+     * @description user minting
      */
-    describe('#purchase', async () => {
-      const doPurchase = async () => {
+    describe('#mint', async () => {
+      const doMint = async () => {
         const { iconicIndex, addr1 } = this;
-        await iconicIndex.connect(addr1).purchase(0, { value: initialFloorPrice });
+        await iconicIndex.connect(addr1).mint(0, { value: initialFloorPrice });
       }
 
       it('assigns the NFT to the purchaser', async () => {
         const { iconicIndex, addr1, contractOwner } = this;
         const currentNFTOwner = await iconicIndex.ownerOf(0);
         expect(currentNFTOwner).to.equal(contractOwner.address);
-        await doPurchase();
+        await doMint();
         const newNFTOwner = await iconicIndex.ownerOf(0);
         expect(newNFTOwner).to.equal(addr1.address);
       })
@@ -80,7 +89,7 @@ describe("Nft", function() {
       it('pays the contract owner', async () => {
         const { contractOwner } = this;
         const ownerWalletBeforePurchase = await contractOwner.getBalance();
-        await doPurchase()
+        await doMint()
         const ownerWalletAfterPurchase = await contractOwner.getBalance();
         const difference = ownerWalletAfterPurchase.sub(ownerWalletBeforePurchase);
         expect(difference.toString()).to.equal(initialFloorPrice.toString());
@@ -88,13 +97,13 @@ describe("Nft", function() {
 
       describe('after a nft has already been bought', async () => {
         beforeEach(async () => {
-          await doPurchase();
+          await doMint();
         });
 
         it('will not let anyone else purchase it', async () => {
-          const { iconicIndex, addr2 } = this;
+          const { iconicIndex, addr1 } = this;
           let error;
-          try { await iconicIndex.connect(addr2).purchase(0, { value: initialFloorPrice }); } 
+          try { await iconicIndex.connect(addr1).purchase(0, { value: initialFloorPrice }); } 
           catch(e) { error = e; }
   
           expect(error.message).to.equal("VM Exception while processing transaction: revert Item not available for purchase");

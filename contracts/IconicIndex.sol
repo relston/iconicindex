@@ -25,39 +25,30 @@ contract IconicIndex is ERC721, Ownable {
       beneficiaryAddress = _beneficiaryAddress;
     }
 
-    function floorPriceFor(uint256 _itemId) public view virtual returns(uint256) {
-      console.log("Returning %s price for token %s", _floorPrices[_itemId], _itemId);
-      return _floorPrices[_itemId];
+    function floorPriceFor(uint256 _tokenId) public view virtual returns(uint256) {
+      return _floorPrices[_tokenId];
     }
 
     /**
      * Add a new item id
      * set a floor price for the item
      */
-    function postItem(uint256 floorPrice) public onlyOwner {
+    function postItem(uint256 floorPrice) public onlyOwner onlyOwner {
       currentId += 1;
       _floorPrices[currentId] = floorPrice;
     }
     
-    // @todo: mint to be public, reflecting normal nft drops
-    function mint() public onlyOwner returns(uint) {
-      _safeMint(owner(), currentId);
+    function mint(uint _tokenId) public payable returns(uint) {
+      require(msg.value >= _floorPrices[_tokenId], 'Please supply the correct funds');
+      transferEthToBenifitary();
+        
+      _safeMint(msg.sender, _tokenId);
       return currentId;
     }
 
-    // @question what is this?
-    // @todo change this to benifitary address
-    function transferEthToOwner() public payable {
-      (bool sent, bytes memory data) = owner().call{value: msg.value}("");
+    function transferEthToBenifitary() public payable {
+      (bool sent, bytes memory data) = beneficiaryAddress.call{value: msg.value}("");
       require(sent, "Failed to send Ether");
-    }
-
-    function purchase(uint256 _itemId) public payable {
-        address _owner = owner();
-        require(msg.value == _floorPrices[_itemId], 'Please supply the correct funds');
-        require(ownerOf(_itemId) == _owner, 'Item not available for purchase');
-        transferEthToOwner();
-        _transfer(_owner, msg.sender, _itemId);
     }
 
     /**
