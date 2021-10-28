@@ -19,11 +19,12 @@ Local UI:
 npm run dev
 ```
 
-### Questions
-- How do I pull up @openzeppelin/contracts/token/ERC721/ERC721.sol into editor?
-  - what where @references called again?
-
 #### References
+Open up the base NFT contract
+```bash
+code node_modules/@openzeppelin/contracts/token/ERC721/ERC721.sol
+```
+
 - [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
 - [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 - [the Next.js GitHub repository](https://github.com/vercel/next.js/) 

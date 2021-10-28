@@ -1,12 +1,14 @@
 const { expect } = require("chai");
 
+const expectError = async callback => {
+  try { await callback(); } catch(e) { return e.message; }
+}
+
 /**
  * @todo change the name of the contract
- * @todo 
  */
 describe("Nft", function() {
-  const baseUri = 'https://localhost'
-  // const beneficiaryAddress = '123' // this is not working, I need an actuall address
+  const baseUri = 'https://localhost/'
   const initialFloorPrice = ethers.utils.parseUnits('0.1','ether')
 
   beforeEach(async () => {
@@ -32,15 +34,11 @@ describe("Nft", function() {
       const { iconicIndex, beneficiaryAddress } = this;
       const address = await iconicIndex.beneficiaryAddress();
       expect(address).to.equal(beneficiaryAddress.address); 
-    });
+    });    
   });
 
   describe('a deployed contract', async () => {
-    describe('#postItem', async () => {
-
-    })
-
-    describe('postItem', async () => {
+    describe('.postItem', async () => {
       const newFloorPrice = ethers.utils.parseUnits('0.2','ether')
 
       it('creates a new token id and price', async () => {
@@ -67,46 +65,83 @@ describe("Nft", function() {
     /**
      * @description user minting
      */
-    describe('#mint', async () => {
+    describe('.mint', async () => {
       const doMint = async () => {
         const { iconicIndex, addr1 } = this;
         await iconicIndex.connect(addr1).mint(0, { value: initialFloorPrice });
       }
+      
+      beforeEach(async () => {
+        const { iconicIndex, contractOwner } = this;
+        await iconicIndex.connect(contractOwner).postItem(initialFloorPrice);
+      });
 
       it('assigns the NFT to the purchaser', async () => {
-        const { iconicIndex, addr1, contractOwner } = this;
-        const currentNFTOwner = await iconicIndex.ownerOf(0);
-        expect(currentNFTOwner).to.equal(contractOwner.address);
+        const { iconicIndex, addr1 } = this;
         await doMint();
         const newNFTOwner = await iconicIndex.ownerOf(0);
         expect(newNFTOwner).to.equal(addr1.address);
       })
 
       /**
-       * @description When a signer purchases the item from contract owner
-       *              the owner gets the price set in eth
+       * @description When a signer mints a token the beneficiary address
+       *              receives the value in eth
        */
-      it('pays the contract owner', async () => {
-        const { contractOwner } = this;
-        const ownerWalletBeforePurchase = await contractOwner.getBalance();
+      it('pays the beneficiary address', async () => {
+        const { beneficiaryAddress } = this;
+        const beneficiaryWalletBeforePurchase = await beneficiaryAddress.getBalance();
         await doMint()
-        const ownerWalletAfterPurchase = await contractOwner.getBalance();
-        const difference = ownerWalletAfterPurchase.sub(ownerWalletBeforePurchase);
+        const beneficiaryWalletAfterPurchase = await beneficiaryAddress.getBalance();
+        const difference = beneficiaryWalletAfterPurchase.sub(beneficiaryWalletBeforePurchase);
         expect(difference.toString()).to.equal(initialFloorPrice.toString());
       });
 
-      describe('after a nft has already been bought', async () => {
+      /**
+       * @description Signer may pay more than the set floor price for the token
+       */
+      it('can accept more then floor price', async () => {
+        const { iconicIndex, addr1 } = this;
+        const additionalEth = ethers.utils.parseUnits('0.1','ether');
+        const totalEth = initialFloorPrice.add(additionalEth);
+        await iconicIndex.connect(addr1).mint(0, { value: totalEth });
+      });
+
+      describe('after a nft has already been minted', async () => {
         beforeEach(async () => {
           await doMint();
         });
 
-        it('will not let anyone else purchase it', async () => {
-          const { iconicIndex, addr1 } = this;
-          let error;
-          try { await iconicIndex.connect(addr1).purchase(0, { value: initialFloorPrice }); } 
-          catch(e) { error = e; }
-  
-          expect(error.message).to.equal("VM Exception while processing transaction: revert Item not available for purchase");
+        it('will not let anyone else mint the token', async () => {
+          const errorMessage = await expectError(doMint);
+          expect(errorMessage).to.equal(
+            "VM Exception while processing transaction: reverted with reason string 'ERC721: token already minted'"
+          );
+        });
+      });
+    });
+
+    describe('Token URIs', async () => {
+      beforeEach(async () => {
+        const { iconicIndex, contractOwner } = this;
+        await iconicIndex.connect(contractOwner).postItem(initialFloorPrice);
+        await iconicIndex.connect(contractOwner).mint(0, { value: initialFloorPrice });
+      });
+
+      describe('.tokenURI', async () => {
+        it('returns the URI from the deployment param', async () => {
+          const { iconicIndex, contractOwner } = this;
+          const tokenURI = await iconicIndex.connect(contractOwner).tokenURI(0);
+          expect(tokenURI).to.equal('https://localhost/0')
+        });
+      });
+
+      describe('.setBaseUri', async () => {
+        it('updates the base token URI', async () => {
+          const newBaseURI = 'https://example.com/';
+          const { iconicIndex, contractOwner } = this;
+          await iconicIndex.connect(contractOwner).setBaseUri(newBaseURI);
+          const tokenURI = await iconicIndex.connect(contractOwner).tokenURI(0);
+          expect(tokenURI).to.equal('https://example.com/0');
         });
       });
     });
