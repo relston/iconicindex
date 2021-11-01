@@ -26,6 +26,12 @@ task("faucet", "Give eth to dev user address", async () => {
   console.log('1 Eth sent to ', DEV_USER_ADDRESS, ' TX: ', tx);
 });
 
+task('balance', 'Get the balance of an address', async () => {
+  const provider = ethers.getDefaultProvider();
+  const balance = await provider.getBalance(DEV_USER_ADDRESS);
+  console.log(DEV_USER_ADDRESS, ethers.utils.formatEther(balance));
+});
+
 /**
  * @type import('hardhat/config').HardhatUserConfig
  */
