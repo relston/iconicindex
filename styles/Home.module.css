@@ -20,7 +20,7 @@
 .angryIcon {
   z-index: -10;
   position: absolute;
-  background-image: url('../pages/tokens/000/angry.clip.svg');
+  background-image: url('../pages/tokens/0/angry.clip.svg');
   background-size: cover;
   background-repeat: no-repeat;
   bottom: -30vw;

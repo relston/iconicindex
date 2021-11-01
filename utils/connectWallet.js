@@ -1,5 +1,5 @@
-import { abi } from '../artifacts/contracts/IconicIndex.sol/IconicIndex.json'
-import { contractAddress } from '../artifacts/deploy.json'
+import contractArtifact from '../artifacts/contracts/IconicIndex.sol/IconicIndex.json'
+import deployArtifact from '../artifacts/deploy.json'
 import { Contract } from "@ethersproject/contracts";
 import { Web3Provider } from "@ethersproject/providers";
 import { useWeb3React } from '@web3-react/core';
@@ -14,7 +14,7 @@ export function getLibrary(provider, connector) {
 
 export function useIconicIndexContract() {
   const { library, account } = useWeb3React()
-  return new Contract(contractAddress, abi, library.getSigner(account));
+  return new Contract(deployArtifact.contractAddress, contractArtifact.abi, library.getSigner(account));
 }
 
 export function ConnectButton() {
