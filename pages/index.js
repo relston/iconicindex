@@ -2,7 +2,7 @@ import Head from 'next/head'
 import Link from 'next/link'
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
-import crustyImg from './icons/000/crusty-screenshot.png'
+import crustyImg from './tokens/000/crusty-screenshot.png'
 import { useEffect, useState } from "react";
 import { ConnectButton, injected } from '../utils/connectWallet'
 import { useWeb3React } from '@web3-react/core'
@@ -76,7 +76,7 @@ export default function Home() {
           <h1 className={`${displayHeader} ${orange}`}>Latest Spreads</h1>
           <ul>
             <li className={spreadImage}>
-              <Link href='icons/000' >
+              <Link href='tokens/000' >
                 <a><Image src={crustyImg.src} alt='Crusty' layout='fill' objectFit='cover'/></a>
               </Link>
             </li>

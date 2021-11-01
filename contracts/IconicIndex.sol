@@ -57,7 +57,7 @@ contract IconicIndex is ERC721, Ownable {
   function tokenURI(uint256 tokenId) public view virtual override returns (string memory) {
       require(_exists(tokenId), "ERC721Metadata: URI query for nonexistent token");
 
-      return string(abi.encodePacked(_baseUri, tokenId.toString()));
+      return string(abi.encodePacked(_baseUri, tokenId.toString(), "/meta.json"));
   }
 
   function setBaseUri(string memory baseUri) public onlyOwner {

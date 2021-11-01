@@ -8,7 +8,7 @@ const expectError = async callback => {
  * @todo change the name of the contract
  */
 describe("Nft", function() {
-  const baseUri = 'https://localhost/'
+  const baseUri = 'https://localhost/tokens/'
   const initialFloorPrice = ethers.utils.parseUnits('0.1','ether')
 
   beforeEach(async () => {
@@ -131,7 +131,7 @@ describe("Nft", function() {
         it('returns the URI from the deployment param', async () => {
           const { iconicIndex, contractOwner } = this;
           const tokenURI = await iconicIndex.connect(contractOwner).tokenURI(0);
-          expect(tokenURI).to.equal('https://localhost/0')
+          expect(tokenURI).to.equal('https://localhost/tokens/0/meta.json')
         });
       });
 
@@ -141,7 +141,7 @@ describe("Nft", function() {
           const { iconicIndex, contractOwner } = this;
           await iconicIndex.connect(contractOwner).setBaseUri(newBaseURI);
           const tokenURI = await iconicIndex.connect(contractOwner).tokenURI(0);
-          expect(tokenURI).to.equal('https://example.com/0');
+          expect(tokenURI).to.equal('https://example.com/0/meta.json');
         });
       });
     });
