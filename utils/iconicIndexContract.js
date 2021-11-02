@@ -30,7 +30,7 @@ export default class IconicIndexContract {
     const state = {
       floorPrice,
       owner
-    }
+    };
 
     if (callback) {
       callback(state);

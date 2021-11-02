@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { actionButton } from '../styles/button.module.css'
 import { mintContainer } from '../styles/mint.module.css'
-import { useIconicIndexContract } from '../utils/connectWallet'
+import { useIconicIndexContract, useConnectedWallet, ConnectButton } from '../utils/connectWallet'
 
 function MintUI ({ floorPrice, mintClick }) {
   const [price, setPrice] = useState(floorPrice);
@@ -29,29 +29,27 @@ function MintUI ({ floorPrice, mintClick }) {
   )
 }
 
-export default function MintController ({ token }) {
+export default function MintController ({ tokenId, tokenState }) {
+  const { floorPrice, owner } = tokenState;
+  const connectedWallet = useConnectedWallet();
   const contract = useIconicIndexContract();
-  const [tokenState, setTokenState] = useState();
-
+  const [minted, setMinted] = useState(false);
   const mintToken = async (value) => {
     const response = await contract.mintToken(token, value);
-    debugger
+    setMinted(true);
   }
   
-  useEffect(()=>{
-    if (!tokenState) {
-      contract.getTokenState(token, setTokenState);
-    }
-  }, [contract, tokenState, setTokenState]);
-
-  if (tokenState) {
-    const { floorPrice, owner } = tokenState;
-    
-    if (owner) {
-      return <>Token owned by {owner}</>;
-    }
-    
-    return <MintUI floorPrice={floorPrice} mintClick={mintToken} />
+  if (owner) {
+    return <>Token is owned by {owner}</>;
   }
-  return <>Loading...</>;
+  
+  if (!connectedWallet.isConnected) {
+    return <ConnectButton />
+  }
+
+  if (minted) {
+    return <>Congrats! You have minted token {tokenId}</>
+  }
+    
+  return <MintUI floorPrice={floorPrice} mintClick={mintToken} /> 
 }

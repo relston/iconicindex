@@ -6,12 +6,14 @@ import IconicIndexContract from './iconicIndexContract';
 export const injected = new InjectedConnector({ supportedChainIds: [1, 3, 4, 5, 42, 31337, 1337] })
 
 export function getLibrary(provider, _connector) { 
-  // console.log('getLibrary', 'provider', provider, 'connector', connector);
   return new Web3Provider(provider);
 }
 
 export function useIconicIndexContract() {
   const { library, account } = useWeb3React();
+  if (!library || !account) {
+    return;
+  }
   return new IconicIndexContract(library.getSigner(account));
 }
 

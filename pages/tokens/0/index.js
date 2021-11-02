@@ -3,16 +3,14 @@ import crackedMud from './cracked-mud.jpg';
 import styles from './styles.module.css';
 import { metadata } from './meta.json';
 import { title } from '../../../styles/Home.module.css'
-import { ConnectButton, useIconicIndexContract, useConnectedWallet } from '../../../utils/connectWallet'
+import ServerProvider from '../../../utils/serverProvider'
 import MintController from '../../../components/mint'
 
 const layoutBackground = {
   backgroundImage: `url('${crackedMud.src}')`
 }
 
-export default function FirstAsset () {
-  const connectedWallet = useConnectedWallet();
-
+export default function FirstAsset ({ tokenState }) {
   return (
     <>
       <main className={styles.layout}>
@@ -37,13 +35,16 @@ export default function FirstAsset () {
           <div className={styles.footerPanel}>
             <p className={title}>{metadata.name}</p>
             <p>{metadata.description}</p>
-            
-            {
-              connectedWallet.isConnected ? <MintController token={0} /> : <ConnectButton />
-            }
+        
+            <MintController tokenId={0} tokenState={tokenState} />
           </div>
         </div>
       </footer>
     </>
   )  
+}
+
+export const getServerSideProps = async context => {
+  const tokenState = await ServerProvider.getTokenState(0) 
+  return { props: { tokenState } };
 }
