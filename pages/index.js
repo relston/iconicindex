@@ -4,24 +4,10 @@ import Image from 'next/image'
 import styles from '../styles/Home.module.css'
 import crustyImg from './tokens/0/crusty-screenshot.png'
 import { useEffect, useState } from "react";
-import { ConnectButton, injected } from '../utils/connectWallet'
-import { useWeb3React } from '@web3-react/core'
+import { ConnectButton, useConnectedWallet } from '../utils/connectWallet'
 
 export default function Home() {  
-  // const { active } = useWeb3React();
-  const { account, library, activate } = useWeb3React();
-  const isConnected = typeof account === "string" && !!library;
-  
-  useEffect(()=>{
-    activate(injected, null, null);
-    // async function inspect() {
-    //   const response = await injected.isAuthorized();
-    //   console.log('account', account, library, injected, response);
-    //   debugger;
-    // }
-    // inspect();
-  }, [activate])
-
+  const connectedWallet = useConnectedWallet();
   const {
     container,
     splash,
@@ -53,7 +39,13 @@ export default function Home() {
       <div className={splash}>
         <div className={headerBar}>
           <div className={`${row} ${title}`}>Iconic Index</div>
-          <div className={row}><ConnectButton /></div>
+          <div className={row}>
+            {
+              connectedWallet.isConnected ? 
+                <span>Address: {connectedWallet.account}</span> : 
+                <ConnectButton />
+            }
+          </div>
         </div>
         <div className={angryIcon}></div>
         {/* todo make this guy parallax, maybe fade */}
@@ -76,7 +68,7 @@ export default function Home() {
           <h1 className={`${displayHeader} ${orange}`}>Latest Spreads</h1>
           <ul>
             <li className={spreadImage}>
-              <Link href='tokens/0' >
+              <Link href='/tokens/0' >
                 <a><Image src={crustyImg.src} alt='Crusty' layout='fill' objectFit='cover'/></a>
               </Link>
             </li>
