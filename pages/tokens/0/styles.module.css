@@ -56,8 +56,17 @@
 }
 
 .footer {
-  padding: 8vw 4vw;
+  padding: 8vw 8vw;
   background-color: black;
   color:grey;
   font-size: smaller;
+}
+
+.contentContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.footerPanel {
 }

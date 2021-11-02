@@ -3,7 +3,7 @@ import crackedMud from './cracked-mud.jpg';
 import styles from './styles.module.css';
 import { metadata } from './meta.json';
 import { useEffect, useState } from "react";
-import { title, contentContainer } from '../../../styles/Home.module.css'
+import { title } from '../../../styles/Home.module.css'
 import { ConnectButton, useIconicIndexContract, useConnectedWallet } from '../../../utils/connectWallet'
 
 const layoutBackground = {
@@ -51,16 +51,16 @@ export default function FirstAsset () {
         </div>
       </main>
       <footer className={styles.footer}>
-        <div className={contentContainer}>
-          <div>
+        <div className={styles.contentContainer}>
+          <div className={styles.footerPanel}>
             <p className={title}>Iconic Index</p>
             <p>©2021 Ryan Elston. All rights reserved.</p>
           </div>
-          <div>
-            <div>
-              {metadata.name}<br />
-              {metadata.description}
-            </div>
+          <div className={styles.footerPanel}>
+            <p className={title}>{metadata.name}</p>
+            <p>{metadata.description}</p>
+            
+            
             {
               connectedWallet.isConnected ? <MintToken /> : <ConnectButton />
             }
