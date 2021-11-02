@@ -1,13 +1,12 @@
-import { loadEnvConfig } from '@next/env'
-const { HOSTNAME } = loadEnvConfig('./').combinedEnv
 import crustyImg from './crusty-screenshot.png'
+const { HOSTNAME } = process.env
 
-const metadata = {
+export const metadata = {
   image: `${HOSTNAME}${crustyImg.src}`,
-  external_url: `${HOSTNAME}/tokens/000`,
+  external_url: `${HOSTNAME}/tokens/0`,
   name: 'Crusty',
   description: 'Dry in the wettest places',
-  animation_url: `${HOSTNAME}/tokens/000`,
+  animation_url: `${HOSTNAME}/tokens/0`,
   background_color: '#000000'
 }
 

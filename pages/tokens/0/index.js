@@ -1,6 +1,7 @@
 import AngryClip from './angryClip';
 import crackedMud from './cracked-mud.jpg';
 import styles from './styles.module.css';
+import { metadata } from './meta.json';
 import { useEffect, useState } from "react";
 import { title, contentContainer } from '../../../styles/Home.module.css'
 import { ConnectButton, useIconicIndexContract, useConnectedWallet } from '../../../utils/connectWallet'
@@ -48,6 +49,10 @@ export default function FirstAsset () {
             <p>©2021 Ryan Elston. All rights reserved.</p>
           </div>
           <div>
+            <div>
+              {metadata.name}<br />
+              {metadata.description}
+            </div>
             {
               connectedWallet.isConnected ? <MintToken /> : <ConnectButton />
             }
