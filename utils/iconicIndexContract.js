@@ -12,18 +12,56 @@ export default class IconicIndexContract {
     );
   }
 
-  async getPriceFor(tokenId, callback) {
+  /**
+   * @description returns on-chain token props
+   * @param {int} tokenId 
+   * @param {function} callback 
+   * @returns {object} object with floorPrice and owner address
+   */
+  async getTokenState(tokenId, callback) {
+    const floorPrice = await this.getFloorPriceFor(tokenId);
+    const owner = await this.getOwnerOf(tokenId);
+    const state = {
+      floorPrice,
+      owner
+    }
+
+    if (callback) {
+      callback(state);
+    } else {
+      return state;
+    }
+  }
+
+  /**
+   * @param {int} tokenId 
+   * @returns {string} floor price for token in eth
+   */
+  async getFloorPriceFor(tokenId) {
     let price;
     try {
       price = await this.contract.floorPriceFor(tokenId);
     } catch(error) {
       console.log(error);
     }
-    const parsedPrice = ethers.utils.formatUnits(price);
-    if (callback) {
-      callback(parsedPrice);
-    } else {
-      return parsedPrice;
+    return ethers.utils.formatUnits(price);
+  }
+
+  /**
+   * @description return Address of token owner, null if not minted
+   * @param {int} tokenId 
+   * @returns {string} Address of owner
+   */
+  async getOwnerOf(tokenId) {
+    try {
+      return await this.contract.ownerOf(tokenId);
+    } catch(error) {
+      const { message } = error.data;
+      if (message.match(/ERC721: owner query for nonexistent token/g)) {
+        return;
+      } else {
+        throw error;
+      }
     }
   }
 }

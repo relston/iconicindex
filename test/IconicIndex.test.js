@@ -9,7 +9,12 @@ const expectError = async callback => {
  */
 describe("Nft", function() {
   const baseUri = 'https://localhost/tokens/'
-  const initialFloorPrice = ethers.utils.parseUnits('0.1','ether')
+  const initialFloorPrice = ethers.utils.parseUnits('0.1','ether');
+
+  const doMint = async () => {
+    const { iconicIndex, addr1 } = this;
+    await iconicIndex.connect(addr1).mint(0, { value: initialFloorPrice });
+  }
 
   beforeEach(async () => {
     const [contractOwner, beneficiaryAddress, addr1] = await ethers.getSigners();
@@ -66,11 +71,6 @@ describe("Nft", function() {
      * @description user minting
      */
     describe('.mint', async () => {
-      const doMint = async () => {
-        const { iconicIndex, addr1 } = this;
-        await iconicIndex.connect(addr1).mint(0, { value: initialFloorPrice });
-      }
-      
       beforeEach(async () => {
         const { iconicIndex, contractOwner } = this;
         await iconicIndex.connect(contractOwner).postItem(initialFloorPrice);

@@ -12,16 +12,24 @@ const layoutBackground = {
 
 function MintToken () {
   const contract = useIconicIndexContract();
-  const [floorPrice, setFloorPrice] = useState();
+  const [tokenState, setTokenState] = useState();
   
   useEffect(()=>{
-    if (!floorPrice) {
-      contract.getPriceFor(0, setFloorPrice);
+    if (!tokenState) {
+      contract.getTokenState(0, setTokenState);
     }
-    
-  }, [contract, floorPrice, setFloorPrice]);
+  }, [contract, tokenState, setTokenState]);
 
-  return <>Mint Token for {floorPrice} eth</>;
+  if (tokenState) {
+    const { floorPrice, owner } = tokenState;
+    
+    if (owner) {
+      return <>Token owned by {owner}</>;
+    }
+  
+    return <>Mint Token for {floorPrice} eth</>;
+  }
+  return <>Loading...</>;
 }
 
 export default function FirstAsset () {
