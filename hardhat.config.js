@@ -5,9 +5,8 @@ require('@nomiclabs/hardhat-ethers');
 
 task("accounts", "Prints the list of accounts and balances", async () => {
   const accounts = await ethers.getSigners();
-  const provider = ethers.getDefaultProvider();
   const promises = accounts.map(async account => {
-    const balance = await provider.getBalance(account.address);
+    const balance = await ethers.provider.getBalance(account.address);
     return {
       address: account.address,
       balance: ethers.utils.formatEther(balance)
@@ -35,9 +34,20 @@ task("faucet", "Give eth to dev user address", async () => {
 });
 
 task('balance', 'Get the balance of dev user', async () => {
-  const provider = ethers.getDefaultProvider();
-  const balance = await provider.getBalance(DEV_USER_ADDRESS);
+  const balance = await ethers.provider.getBalance(DEV_USER_ADDRESS);
   console.log(DEV_USER_ADDRESS, ethers.utils.formatEther(balance));
+});
+
+task('mint', 'mint token to test user', async () => {
+  const contractArtifact = require('./artifacts/contracts/IconicIndex.sol/IconicIndex.json');
+  const deployArtifact = require('./artifacts/deploy.json');
+  const [_a,  _b, userWallet] = await ethers.getSigners();
+  const contract = new ethers.Contract(
+    deployArtifact.contractAddress, 
+    contractArtifact.abi, 
+    userWallet
+  );
+  await contract.mint(0, { value: ethers.utils.parseEther('1').toString() });
 });
 
 /**

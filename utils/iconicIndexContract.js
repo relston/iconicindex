@@ -62,12 +62,7 @@ export default class IconicIndexContract {
     try {
       return await this.contract.ownerOf(tokenId);
     } catch(error) {
-      const { message } = error.data;
-      if (message.match(/ERC721: owner query for nonexistent token/g)) {
-        return;
-      } else {
-        throw error;
-      }
+      return null;
     }
   }
 }

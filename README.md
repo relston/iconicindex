@@ -9,10 +9,7 @@ https://iconicindex.vercel.app/
 
 ```bash
 npx hardhat node 
-npx hardhat run --network localhost scripts/deploy.js
-npx hardhat faucet --network localhost ## give yourself some eth
-## or testnet via infura
-npx hardhat run --network ropsten scripts/deploy.js
+npx hardhat run scripts/deploy.js
 ```
 
 Local UI:
@@ -20,7 +17,6 @@ Local UI:
 npm run dev
 ```
 
-#### References
 Open up the base NFT contract
 ```bash
 code node_modules/@openzeppelin/contracts/token/ERC721/ERC721.sol

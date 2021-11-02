@@ -9,11 +9,12 @@ const limitedContract = new IconicIndexContract(provider);
 export default class ServerProvider {
   static async getTokenState(tokenId) {
     const tokenState = await limitedContract.getTokenState(tokenId);
-    if (tokenState.owner) {
-      const ensName = await this.ensReverseLookup(tokenState.owner);
-      console.log('ensName', ensName);
+    const ensName = tokenState.owner && await this.ensReverseLookup(tokenState.owner);
+
+    if (ensName) {
       tokenState.owner = ensName;
     }
+
     return tokenState;
   }
 
