@@ -8,8 +8,9 @@ https://iconicindex.vercel.app/
 - `npx hardhat faucet` to get eth to your dev user
 
 ```bash
-npx hardhat node
+npx hardhat node 
 npx hardhat run --network localhost scripts/deploy.js
+npx hardhat faucet --network localhost ## give yourself some eth
 ## or testnet via infura
 npx hardhat run --network ropsten scripts/deploy.js
 ```
