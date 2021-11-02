@@ -51,12 +51,6 @@
   font-size: 3rem;
 }
 
-.headerBar button {
-  font-size: 1.5rem;
-  font-family: 'Gemunu Libre';
-  background-color: var(--platinum);
-}
-
 @media (max-width: 600px) {
   .splash {
     height: 30vh;

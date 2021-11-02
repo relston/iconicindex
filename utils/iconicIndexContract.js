@@ -12,6 +12,12 @@ export default class IconicIndexContract {
     );
   }
 
+  async mintToken(tokenId, value) {
+    const parsedValue = ethers.utils.parseUnits(value,'ether');
+    const response = await this.contract.mint(tokenId, { value: parsedValue.toString() });
+    return response;
+  }
+
   /**
    * @description returns on-chain token props
    * @param {int} tokenId 
@@ -41,10 +47,10 @@ export default class IconicIndexContract {
     let price;
     try {
       price = await this.contract.floorPriceFor(tokenId);
+      return ethers.utils.formatUnits(price);
     } catch(error) {
       console.log(error);
     }
-    return ethers.utils.formatUnits(price);
   }
 
   /**

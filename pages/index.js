@@ -2,6 +2,7 @@ import Head from 'next/head'
 import Link from 'next/link'
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
+import { actionButton } from '../styles/button.module.css'
 import crustyImg from './tokens/0/crusty-screenshot.png'
 import { useEffect, useState } from "react";
 import { ConnectButton, useConnectedWallet } from '../utils/connectWallet'
@@ -43,7 +44,7 @@ export default function Home() {
             {
               connectedWallet.isConnected ? 
                 <span>Address: {connectedWallet.account}</span> : 
-                <ConnectButton />
+                <ConnectButton className={actionButton} />
             }
           </div>
         </div>

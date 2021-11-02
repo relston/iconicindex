@@ -31,5 +31,5 @@ export function ConnectButton() {
     await activate(injected, null, null)
   }
 
-  return <button onClick={onConnectClick}>Connect Wallet</button>
+  return <button onClick={onConnectClick} >Connect Wallet</button>
 }

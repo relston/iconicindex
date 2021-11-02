@@ -1,0 +1,8 @@
+.mintContainer {
+
+}
+.mintContainer input {
+  margin-right: 10px;
+  font-size: 1.5rem;
+  max-width: 10vw;
+}
