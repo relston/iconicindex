@@ -2,6 +2,7 @@ const { loadEnvConfig } = require('@next/env');
 const { INFURA_API_KEY, DEV_WALLET_PRIVATE_KEY, DEV_USER_ADDRESS, BENEFICIARY_PK, USER_PK } = loadEnvConfig('./').combinedEnv
 
 require('@nomiclabs/hardhat-ethers');
+require('hardhat-gas-reporter');
 
 task("accounts", "Prints the list of accounts and balances", async () => {
   const accounts = await ethers.getSigners();
@@ -55,7 +56,6 @@ task('mint', 'mint token to test user', async () => {
  */
 module.exports = {
   solidity: "0.8.3",
-  defaultNetwork: 'localhost',
   networks: {
     hardhat: {
       accounts: [{
