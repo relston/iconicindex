@@ -12,6 +12,12 @@ npx hardhat node
 npx hardhat run scripts/deploy.js
 ```
 
+## Deploy Contract to Testnet
+```bash
+npx hardhat accounts --network rinkeby # check account value
+npx hardhat run scripts/deploy.js --network rinkeby
+```
+
 Local UI:
 ```bash
 npm run dev

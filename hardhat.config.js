@@ -70,8 +70,8 @@ module.exports = {
         balance: "10000000000000000000000"
       }]
     },
-    ropsten: {
-      url: `https://ropsten.infura.io/v3/${INFURA_API_KEY}`,
+    rinkeby: {
+      url: `https://rinkeby.infura.io/v3/${INFURA_API_KEY}`,
       accounts: [DEV_WALLET_PRIVATE_KEY]
     }
   }
