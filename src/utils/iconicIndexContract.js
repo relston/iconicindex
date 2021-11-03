@@ -1,5 +1,5 @@
-import contractArtifact from '../artifacts/contracts/IconicIndex.sol/IconicIndex.json'
-import deployArtifact from '../artifacts/deploy.json'
+import contractArtifact from '../../artifacts/contracts/IconicIndex.sol/IconicIndex.json'
+import deployArtifact from '../../artifacts/deploy.json'
 import { ethers } from 'ethers';
 import { Contract } from "@ethersproject/contracts";
 

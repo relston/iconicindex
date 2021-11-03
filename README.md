@@ -14,7 +14,8 @@ npx hardhat run scripts/deploy.js
 
 ## Deploy Contract to Testnet
 ```bash
-npx hardhat accounts --network rinkeby # check account value
+# check account value
+npx hardhat accounts --network rinkeby 
 npx hardhat run scripts/deploy.js --network rinkeby
 ```
 
