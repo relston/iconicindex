@@ -9,6 +9,7 @@ import { ConnectButton, useConnectedWallet } from '../utils/connectWallet'
 
 export default function Home() {  
   const connectedWallet = useConnectedWallet();
+  
   const {
     container,
     splash,
@@ -42,9 +43,7 @@ export default function Home() {
           <div className={`${row} ${title}`}>Iconic Index</div>
           <div className={row}>
             {
-              connectedWallet.isConnected ? 
-                <span>Address: {connectedWallet.account}</span> : 
-                <ConnectButton className={actionButton} />
+              !connectedWallet.active && <ConnectButton className={actionButton} />
             }
           </div>
         </div>

@@ -47,7 +47,7 @@ export default function MintController ({ tokenId, tokenState }) {
     return <>Token info not available</>
   }
   
-  if (!connectedWallet.isConnected) {
+  if (!connectedWallet.active) {
     return <ConnectButton />
   }
 
