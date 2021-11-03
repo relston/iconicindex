@@ -1,12 +1,13 @@
 import contractArtifact from '../../artifacts/contracts/IconicIndex.sol/IconicIndex.json'
-import deployArtifact from '../../artifacts/deploy.json'
 import { ethers } from 'ethers';
 import { Contract } from "@ethersproject/contracts";
+
+const CONTRACT_ADDRESS = process.env.NEXT_PUBLIC_CONTRACT_ADDRESS;
 
 export default class IconicIndexContract {
   constructor(signer) {
     this.contract = new Contract(
-      deployArtifact.contractAddress, 
+      CONTRACT_ADDRESS, 
       contractArtifact.abi, 
       signer
     );
