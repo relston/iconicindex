@@ -10,6 +10,7 @@ https://iconicindex.vercel.app/
 ```bash
 npx hardhat node 
 npx hardhat run scripts/deploy.js --network localhost
+npm run dev
 ```
 
 ## Deploy Contract to Testnet
@@ -19,16 +20,12 @@ npx hardhat accounts --network rinkeby
 npx hardhat run scripts/deploy.js --network rinkeby
 ```
 
-Local UI:
-```bash
-npm run dev
-```
-
-Open up the base NFT contract
+# References
+## Open up the base NFT contract
 ```bash
 code node_modules/@openzeppelin/contracts/token/ERC721/ERC721.sol
 ```
-
+## Links
 - [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
 - [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 - [the Next.js GitHub repository](https://github.com/vercel/next.js/) 
