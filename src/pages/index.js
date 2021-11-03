@@ -103,7 +103,7 @@ export default function Home() {
           <div className={card}>
             <h2>Who made this?</h2>
             <p>Hi! My name is Ryan Elston. </p>
-            <p>I'm a software engineer out in the bay area. I sometimes like to tinker with things. Whenever I come up with something cool I want to put it here for y'all.</p>
+            <p>I&apos;m a software engineer out in the bay area. I sometimes like to tinker with things. Whenever I come up with something cool I want to put it here for y&apos;all.</p>
           </div>
         </div>
       </div>

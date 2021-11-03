@@ -20,6 +20,8 @@ npx hardhat accounts --network rinkeby
 npx hardhat run scripts/deploy.js --network rinkeby
 ```
 
+Rinkeby: 0x21D4afEd3b302a6fCC6b9Bf96AFB73A502b9306b
+
 # References
 ## Open up the base NFT contract
 ```bash
