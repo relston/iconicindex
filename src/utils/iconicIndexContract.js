@@ -50,6 +50,7 @@ export default class IconicIndexContract {
       return ethers.utils.formatUnits(price);
     } catch(error) {
       console.log(error);
+      return null;
     }
   }
 
@@ -62,6 +63,7 @@ export default class IconicIndexContract {
     try {
       return await this.contract.ownerOf(tokenId);
     } catch(error) {
+      console.log(error);
       return null;
     }
   }

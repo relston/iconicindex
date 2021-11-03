@@ -42,6 +42,10 @@ export default function MintController ({ tokenId, tokenState }) {
   if (owner) {
     return <>Token is owned by {owner}</>;
   }
+
+  if (!floorPrice) {
+    return <>Token info not available</>
+  }
   
   if (!connectedWallet.isConnected) {
     return <ConnectButton />

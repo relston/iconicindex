@@ -44,7 +44,7 @@ export default function FirstAsset ({ tokenState }) {
   )  
 }
 
-export const getServerSideProps = async context => {
-  const tokenState = await ServerProvider.getTokenState(0) 
+export const getServerSideProps = async _context => {
+  const tokenState = await ServerProvider.getTokenState(0); 
   return { props: { tokenState } };
 }
