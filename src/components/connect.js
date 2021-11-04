@@ -1,4 +1,4 @@
-import { useConnectedWallet, injected } from "../utils/connectWallet";
+import { useConnectedWallet, injected, PRIMARY_CHAIN } from "../utils/connectWallet";
 import { actionButton } from '../styles/button.module.css'
 
 const textStyle = {
@@ -15,14 +15,22 @@ export function ConnectButton() {
 }
 
 export default function ConnectComponent () {
-  const { active, errMsg } = useConnectedWallet();
+  const connectedWallet = useConnectedWallet();
+  console.log('connectedWallet', connectedWallet);
+  const { active, wrongChain, userRejected } = connectedWallet;
   
   if (active) {
     return <span style={textStyle}>Connected</span>
   }
 
-  if (errMsg) {
-    return <span style={textStyle}>{errMsg}</span>
+  if (wrongChain) {
+    return <span style={textStyle}>Please switch to {PRIMARY_CHAIN} network</span>
   }
-  return <ConnectButton />
+
+  return (
+    <>
+      { userRejected && <p>Please accept connection request</p> }
+      <ConnectButton />
+    </>
+  )
 }
