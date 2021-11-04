@@ -15,9 +15,7 @@ export function ConnectButton() {
 }
 
 export default function ConnectComponent () {
-  const connectedWallet = useConnectedWallet();
-  console.log('connectedWallet', connectedWallet);
-  const { active, wrongChain, userRejected } = connectedWallet;
+  const { active, wrongChain, userRejected } = useConnectedWallet();
   
   if (active) {
     return <span style={textStyle}>Connected</span>
