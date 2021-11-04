@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { actionButton } from '../styles/button.module.css'
 import { mintContainer } from '../styles/mint.module.css'
-import { useIconicIndexContract, useConnectedWallet, ConnectButton } from '../utils/connectWallet'
+import ConnectComponent from "./connect";
+import { useConnectedWallet } from '../utils/connectWallet'
 
 function MintUI ({ floorPrice, mintClick }) {
   const [price, setPrice] = useState(floorPrice);
@@ -32,10 +33,9 @@ function MintUI ({ floorPrice, mintClick }) {
 export default function MintController ({ tokenId, tokenState }) {
   const { floorPrice, owner } = tokenState;
   const connectedWallet = useConnectedWallet();
-  const contract = useIconicIndexContract();
   const [minted, setMinted] = useState(false);
   const mintToken = async (value) => {
-    const response = await contract.mintToken(token, value);
+    await connectedWallet.contract.mintToken(tokenId, value);
     setMinted(true);
   }
   
@@ -48,7 +48,7 @@ export default function MintController ({ tokenId, tokenState }) {
   }
   
   if (!connectedWallet.active) {
-    return <ConnectButton />
+    return <ConnectComponent />
   }
 
   if (minted) {

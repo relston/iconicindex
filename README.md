@@ -10,6 +10,9 @@ https://iconicindex.vercel.app/
 ```bash
 npx hardhat node 
 npx hardhat run scripts/deploy.js --network localhost
+```
+Copy the contract address and put it into the `NEXT_PUBLIC_CONTRACT_ADDRESS` of your `.env.local` file.
+```bash
 npm run dev
 ```
 

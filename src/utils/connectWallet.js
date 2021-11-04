@@ -28,31 +28,24 @@ export function useIconicIndexContract() {
   return new IconicIndexContract(library.getSigner(account));
 }
 
-export function useConnectedWallet() {
-  const web3Context = useWeb3React();
-  const { error, active } = web3Context;
-  let callToAction = 'Connect Wallet';
-
+const parseErrMsg = error => {
   if (error && error.name === 'UserRejectedRequestError') {
-    callToAction = `Please please accept connection request`;
+    return `Please please accept connection request`;
   }
   if (error && error.name === 'UnsupportedChainIdError') {
-    callToAction = `Please switch to ${CHAINS[PRIMARY_CHAIN]} network`;
-  }
-  if (active) {
-    callToAction = 'Connected';
-  }
-  
-  return {
-    callToAction,
-    ...web3Context
+    return `Please switch to ${CHAINS[PRIMARY_CHAIN]} network`;
   }
 }
 
-export function ConnectButton() {
-  const { activate, callToAction } = useConnectedWallet();
-  const onConnectClick = async () => {
-    await activate(injected, null, null)
+export function useConnectedWallet() {
+  const web3Context = useWeb3React();
+  console.log('web3Context', web3Context);
+  const errMsg = parseErrMsg(web3Context.error);
+  const contract = useIconicIndexContract();
+  
+  return {
+    errMsg,
+    contract,
+    ...web3Context
   }
-  return <button onClick={onConnectClick} >{ callToAction }</button>
 }

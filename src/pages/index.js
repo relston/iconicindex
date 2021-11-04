@@ -2,14 +2,10 @@ import Head from 'next/head'
 import Link from 'next/link'
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
-import { actionButton } from '../styles/button.module.css'
 import crustyImg from './tokens/0/crusty-screenshot.png'
-import { useEffect, useState } from "react";
-import { ConnectButton, useConnectedWallet } from '../utils/connectWallet'
+import ConnectComponent from '../components/connect'
 
 export default function Home() {  
-  const connectedWallet = useConnectedWallet();
-  
   const {
     container,
     splash,
@@ -42,9 +38,7 @@ export default function Home() {
         <div className={headerBar}>
           <div className={`${row} ${title}`}>Iconic Index</div>
           <div className={row}>
-            {
-              !connectedWallet.active && <ConnectButton className={actionButton} />
-            }
+            <ConnectComponent />
           </div>
         </div>
         <div className={angryIcon}></div>
