@@ -1,5 +1,5 @@
-import { ethers } from 'ethers'
-import IconicIndexContract from './iconicIndexContract';
+import { ethers } from "ethers";
+import IconicIndexContract from "./iconicIndexContract";
 
 const { NEXT_PUBLIC_CHAIN_ID, NETWORK_URL } = process.env;
 const network = ethers.providers.getNetwork(NEXT_PUBLIC_CHAIN_ID);
@@ -9,7 +9,8 @@ const limitedContract = new IconicIndexContract(provider);
 export default class ServerProvider {
   static async getTokenState(tokenId) {
     const tokenState = await limitedContract.getTokenState(tokenId);
-    const ensName = tokenState.owner && await this.ensReverseLookup(tokenState.owner);
+    const ensName =
+      tokenState.owner && (await this.ensReverseLookup(tokenState.owner));
 
     if (ensName) {
       tokenState.owner = ensName;
@@ -23,4 +24,3 @@ export default class ServerProvider {
     return await mainnetProvider.lookupAddress(address);
   }
 }
- 

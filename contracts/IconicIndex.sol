@@ -13,7 +13,6 @@ contract IconicIndex is ERC721, Ownable {
   // Recipient of eth used to mint item
   address public beneficiaryAddress;
   
-
   // Mapping from token ID to floor price
   mapping(uint256 => uint256) private _floorPrices;
 

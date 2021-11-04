@@ -1,0 +1,8 @@
+.next
+.vscode
+artifacts
+cache
+contracts
+node_modules
+optimized
+public

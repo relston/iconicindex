@@ -1,24 +1,26 @@
-import contractAbi from './abi.json'
-import { ethers } from 'ethers';
+import contractAbi from "./abi.json";
+import { ethers } from "ethers";
 import { Contract } from "@ethersproject/contracts";
 
 const CONTRACT_ADDRESS = process.env.NEXT_PUBLIC_CONTRACT_ADDRESS;
 
 export default class IconicIndexContract {
   constructor(signer) {
-    this.contract = new Contract( CONTRACT_ADDRESS, contractAbi, signer );
+    this.contract = new Contract(CONTRACT_ADDRESS, contractAbi, signer);
   }
 
   async mintToken(tokenId, value) {
-    const parsedValue = ethers.utils.parseUnits(value,'ether');
-    const response = await this.contract.mint(tokenId, { value: parsedValue.toString() });
+    const parsedValue = ethers.utils.parseUnits(value, "ether");
+    const response = await this.contract.mint(tokenId, {
+      value: parsedValue.toString(),
+    });
     return response;
   }
 
   /**
    * @description returns on-chain token props
-   * @param {int} tokenId 
-   * @param {function} callback 
+   * @param {int} tokenId
+   * @param {function} callback
    * @returns {object} object with floorPrice and owner address
    */
   async getTokenState(tokenId, callback) {
@@ -26,7 +28,7 @@ export default class IconicIndexContract {
     const owner = await this.getOwnerOf(tokenId);
     const state = {
       floorPrice,
-      owner
+      owner,
     };
 
     if (callback) {
@@ -37,7 +39,7 @@ export default class IconicIndexContract {
   }
 
   /**
-   * @param {int} tokenId 
+   * @param {int} tokenId
    * @returns {string} floor price for token in eth
    */
   async getFloorPriceFor(tokenId) {
@@ -45,7 +47,7 @@ export default class IconicIndexContract {
     try {
       price = await this.contract.floorPriceFor(tokenId);
       return ethers.utils.formatUnits(price);
-    } catch(error) {
+    } catch (error) {
       console.log(error);
       return null;
     }
@@ -53,13 +55,13 @@ export default class IconicIndexContract {
 
   /**
    * @description return Address of token owner, null if not minted
-   * @param {int} tokenId 
+   * @param {int} tokenId
    * @returns {string} Address of owner
    */
   async getOwnerOf(tokenId) {
     try {
       return await this.contract.ownerOf(tokenId);
-    } catch(error) {
+    } catch (error) {
       console.log(error);
       return null;
     }

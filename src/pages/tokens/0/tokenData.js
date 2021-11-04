@@ -1,4 +1,4 @@
-import crustyImg from './crusty-screenshot.png'
+import crustyImg from "./crusty-screenshot.png";
 
 const tokenData = {
   name: "Crusty",
@@ -6,7 +6,7 @@ const tokenData = {
   imageSrc: crustyImg.src,
   tokenPath: "/tokens/0",
   animationPath: "/tokens/0",
-  backgroundColor: '#000000'
-}
+  backgroundColor: "#000000",
+};
 
 export default tokenData;

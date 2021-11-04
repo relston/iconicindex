@@ -8,8 +8,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "deploy": "hardhat run scripts/deploy.js",
-    "deploy-ropsten": "hardhat run scripts/deploy.js --network ropsten"
+    "fmt": "npx prettier '**/**.js' --write",
+    "deploy": "hardhat run scripts/deploy.js --network localhost",
+    "abi": "hardhat run scripts/abi.js"
   },
   "dependencies": {
     "@ethersproject/providers": "^5.4.4",
@@ -32,6 +33,7 @@
     "ethers": "^5.1.4",
     "hardhat": "^2.6.0",
     "hardhat-gas-reporter": "^1.0.4",
-    "http-server": "^13.0.0"
+    "http-server": "^13.0.0",
+    "prettier": "2.4.1"
   }
 }

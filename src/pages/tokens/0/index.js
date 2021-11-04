@@ -1,25 +1,28 @@
-import AngryClip from './angryClip';
-import crackedMud from './cracked-mud.jpg';
-import styles from './styles.module.css';
-import tokenData from './tokenData';
-import { title } from '../../../styles/Home.module.css'
-import ServerProvider from '../../../utils/serverProvider'
-import MintController from '../../../components/mint'
+import AngryClip from "./angryClip";
+import crackedMud from "./cracked-mud.jpg";
+import styles from "./styles.module.css";
+import tokenData from "./tokenData";
+import { title } from "../../../styles/Home.module.css";
+import ServerProvider from "../../../utils/serverProvider";
+import MintController from "../../../components/mint";
 
 const layoutBackground = {
-  backgroundImage: `url('${crackedMud.src}')`
-}
+  backgroundImage: `url('${crackedMud.src}')`,
+};
 
-export default function FirstAsset ({ tokenState }) {
+export default function FirstAsset({ tokenState }) {
   return (
     <>
       <main className={styles.layout}>
         <div className={styles.hidden}>
-          <AngryClip /> 
+          <AngryClip />
         </div>
         <div className={styles.videoContainer}>
           <video autoPlay muted loop className={styles.videoBackground}>
-            <source src="/000/20210620-ocean-drone-loop-sm.mp4" type="video/mp4" />
+            <source
+              src="/000/20210620-ocean-drone-loop-sm.mp4"
+              type="video/mp4"
+            />
           </video>
         </div>
         <div className={styles.heroContainer}>
@@ -35,16 +38,16 @@ export default function FirstAsset ({ tokenState }) {
           <div className={styles.footerPanel}>
             <p className={title}>{tokenData.name}</p>
             <p>{tokenData.description}</p>
-        
+
             <MintController tokenId={0} tokenState={tokenState} />
           </div>
         </div>
       </footer>
     </>
-  )  
+  );
 }
 
-export const getServerSideProps = async _context => {
-  const tokenState = await ServerProvider.getTokenState(0); 
+export const getServerSideProps = async (_context) => {
+  const tokenState = await ServerProvider.getTokenState(0);
   return { props: { tokenState } };
-}
+};
