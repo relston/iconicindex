@@ -1,6 +1,21 @@
 # Iconic Index
 https://iconicindex.vercel.app/
 
+This is my personal NFT project. Each token is an html page layout that I created with a combination of handmade or royalty free assets. 
+
+Contract is not currently on mainnet. When I choose to go live all proceeds for any NFT mints will go to [Coin Center](https://www.coincenter.org/) to help shape sensible government policy for cryptocurrencies.
+
+The novel thing about this NFT contact is that it implements a `floorPrice` for each token. This allows the minter to pay any amount over that set amount for the token.
+
+This essentially makes token minting a proxy donation to Coin Center!
+
+This project was built with:
+- Hardhat
+- Ethers.js
+- Next.js
+
+Any feedback or advice is greatly welcome and appreciated!
+
 ## Getting Started
 - Setup your environment: `cp .env .env.local`
 - Add set a secret key for `DEV_WALLET_PRIVATE_KEY` which will be contract owner
