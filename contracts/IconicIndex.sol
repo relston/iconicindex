@@ -38,6 +38,8 @@ contract IconicIndex is ERC721, Ownable {
   }
   
   function mint(uint _tokenId) public payable returns(uint) {
+    uint256 floorPrice = _floorPrices[_tokenId];
+    require(floorPrice != 0, 'Unknown token id');
     require(msg.value >= _floorPrices[_tokenId], 'Please supply the correct funds');
     transferEthToBenifitary();
       

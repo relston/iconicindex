@@ -122,6 +122,18 @@ describe("Nft", function () {
         await iconicIndex.connect(addr1).mint(0, { value: totalEth });
       });
 
+      it("will not mint non-posted token", async () => {
+        const { iconicIndex, addr1 } = this;
+        const mintUnknownToken = async () =>
+          await iconicIndex
+            .connect(addr1)
+            .mint(100, { value: initialFloorPrice });
+        const errorMessage = await expectError(mintUnknownToken);
+        expect(errorMessage).to.equal(
+          "VM Exception while processing transaction: reverted with reason string 'Unknown token id'"
+        );
+      });
+
       describe("after a nft has already been minted", async () => {
         beforeEach(async () => {
           await doMint();
