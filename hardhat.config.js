@@ -71,7 +71,7 @@ module.exports = {
         },
         {
           privateKey: BENEFICIARY_PK,
-          balance: "0",
+          balance: "10000000000000000000000",
         },
         {
           privateKey: USER_PK,

@@ -24,44 +24,58 @@ contract IconicIndex is ERC721, Ownable {
     beneficiaryAddress = _beneficiaryAddress;
   }
 
-  function floorPriceFor(uint256 _tokenId) public view virtual returns(uint256) {
+  function floorPriceFor(uint256 _tokenId) external view virtual returns(uint256) {
     return _floorPrices[_tokenId];
   }
 
   /**
-    * Add a new item id
-    * set a floor price for the item
-    */
-  function postItem(uint256 floorPrice) public onlyOwner {
+   * @dev Add a new item id
+   *      set a floor price for the item
+   */
+  function postItem(uint256 floorPrice) external onlyOwner returns(uint) {
+    require(floorPrice > 0, 'Please supply a floor price');
     currentId += 1;
     _floorPrices[currentId] = floorPrice;
+    return currentId;
   }
-  
-  function mint(uint _tokenId) public payable returns(uint) {
+
+  /**
+   * @dev User is able to mint a posted token 
+   */
+  function mint(uint _tokenId) external payable returns(uint) {
     uint256 floorPrice = _floorPrices[_tokenId];
     require(floorPrice != 0, 'Unknown token id');
     require(msg.value >= _floorPrices[_tokenId], 'Please supply the correct funds');
-    transferEthToBenifitary();
       
     _safeMint(msg.sender, _tokenId);
     return _tokenId;
   }
 
-  function transferEthToBenifitary() public payable {
-    (bool sent, bytes memory data) = beneficiaryAddress.call{value: msg.value}("");
-    require(sent, "Failed to send Ether");
+  /**
+    * @dev Returns eth balance of contract
+    */
+  function totalBalance() external view returns(uint) {
+    return payable(address(this)).balance;
   }
 
   /**
-    * @dev See {IERC721Metadata-tokenURI}.
-    */
+   * @dev Beneficiary can receive the Eth balance from contract
+   */
+  function withdrawFunds() external {
+    require(msg.sender == beneficiaryAddress, 'Only beneficiary can withdrawal funds');
+    payable(msg.sender).transfer(this.totalBalance());
+  }
+
+  /**
+   * @dev See {IERC721Metadata-tokenURI}.
+   */
   function tokenURI(uint256 tokenId) public view virtual override returns (string memory) {
       require(_exists(tokenId), "ERC721Metadata: URI query for nonexistent token");
 
       return string(abi.encodePacked(_baseUri, tokenId.toString()));
   }
 
-  function setBaseUri(string memory baseUri) public onlyOwner {
+  function setBaseUri(string memory baseUri) external onlyOwner {
     _baseUri = baseUri;
   }
 }

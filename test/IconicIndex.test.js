@@ -96,20 +96,19 @@ describe("Nft", function () {
       });
 
       /**
-       * @description When a signer mints a token the beneficiary address
-       *              receives the value in eth
+       * @description The value of the contract increases
        */
-      it("pays the beneficiary address", async () => {
-        const { beneficiaryAddress } = this;
-        const beneficiaryWalletBeforePurchase =
-          await beneficiaryAddress.getBalance();
+      it("pays the contract", async () => {
+        const { iconicIndex, addr1 } = this;
+        let currentBalance = await iconicIndex.totalBalance();
+        expect(currentBalance.toString()).to.equal("0");
+
         await doMint();
-        const beneficiaryWalletAfterPurchase =
-          await beneficiaryAddress.getBalance();
-        const difference = beneficiaryWalletAfterPurchase.sub(
-          beneficiaryWalletBeforePurchase
+
+        currentBalance = await iconicIndex.totalBalance();
+        expect(currentBalance.toString()).to.equal(
+          initialFloorPrice.toString()
         );
-        expect(difference.toString()).to.equal(initialFloorPrice.toString());
       });
 
       /**
@@ -145,6 +144,30 @@ describe("Nft", function () {
             "VM Exception while processing transaction: reverted with reason string 'ERC721: token already minted'"
           );
         });
+      });
+    });
+
+    describe("Withdrawal", async () => {
+      beforeEach(async () => {
+        await doMint();
+      });
+
+      it("Transfers eth to beneficiary", async () => {
+        const { iconicIndex, beneficiaryAddress } = this;
+        const startingBalance = await beneficiaryAddress.getBalance();
+        await iconicIndex.connect(beneficiaryAddress).withdrawFunds();
+        const endingBalance = await beneficiaryAddress.getBalance();
+        expect(endingBalance.gt(startingBalance));
+      });
+
+      it("only beneficiary can withdrawal", async () => {
+        const { iconicIndex, addr1 } = this;
+        const widthdrawal = async () =>
+          await iconicIndex.connect(addr1).withdrawFunds();
+        const errorMessage = await expectError(widthdrawal);
+        expect(errorMessage).to.equal(
+          "VM Exception while processing transaction: reverted with reason string 'Only beneficiary can withdrawal funds'"
+        );
       });
     });
 
