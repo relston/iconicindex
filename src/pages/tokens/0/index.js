@@ -1,13 +1,22 @@
+import styles from "./styles.module.css";
 import AngryClip from "./angryClip";
 import crackedMud from "./cracked-mud.jpg";
-import styles from "./styles.module.css";
-import tokenData from "./tokenData";
+import crustyImg from "./crusty-screenshot.png";
 import { title } from "../../../styles/Home.module.css";
 import ServerProvider from "../../../utils/serverProvider";
 import MintController from "../../../components/mint";
 
 const layoutBackground = {
   backgroundImage: `url('${crackedMud.src}')`,
+};
+
+export const crustyToken = {
+  name: "Crusty",
+  description: "Dry in the wettest places",
+  imageSrc: crustyImg.src,
+  tokenPath: "/tokens/0",
+  animationPath: "/tokens/0",
+  backgroundColor: "#000000",
 };
 
 export default function FirstAsset({ tokenState }) {
@@ -36,8 +45,8 @@ export default function FirstAsset({ tokenState }) {
             <p>©2021 Ryan Elston. All rights reserved.</p>
           </div>
           <div className={styles.footerPanel}>
-            <p className={title}>{tokenData.name}</p>
-            <p>{tokenData.description}</p>
+            <p className={title}>{crustyToken.name}</p>
+            <p>{crustyToken.description}</p>
 
             <MintController tokenId={0} tokenState={tokenState} />
           </div>

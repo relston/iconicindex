@@ -1,8 +1,8 @@
 import Cors from "cors";
-import token0 from "../../tokens/0/tokenData";
+import { crustyToken } from "../../tokens/0/index";
 
 const { HOSTNAME } = process.env;
-const tokenIndex = [token0];
+const tokenIndex = [crustyToken];
 
 /**
  * @todo move the middleware somewhere else
