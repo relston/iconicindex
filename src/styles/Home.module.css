@@ -106,7 +106,7 @@
   color: white;
   padding-top: 3rem;
   font-size: 1.3rem;
-  min-height: 50vw;
+  min-height: 50vh;
 }
 .about h1, .about p {
   margin: 0 0 3rem;
@@ -120,6 +120,7 @@
 @media (max-width: 600px) {
   .about {
     font-size: 1rem;
+    min-height: 60vh;
   }
 }
 
