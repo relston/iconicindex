@@ -133,6 +133,18 @@ export default function Home() {
           </div>
 
           <div className={card}>
+            <h2>
+              Are these <em>spreads</em> on Ethereum Mainnet?
+            </h2>
+            <p>
+              The IconicIndex contract is currently on the Rinkeby test net, and
+              this Dapp is constrained to that network. A Mainnet launch will
+              happen once the contract is finalized and enough high-quality{" "}
+              <em>spreads</em> have been created.
+            </p>
+          </div>
+
+          <div className={card}>
             <h2>Who made this?</h2>
             <p>Hi! My name is Ryan Elston. </p>
             <p>
